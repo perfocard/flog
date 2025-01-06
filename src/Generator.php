@@ -6,6 +6,18 @@ use Symfony\Component\Process\Process;
 
 class Generator
 {
+    protected static function getBinaryPath(): string
+    {
+        $platform = config('flog.platform');
+        $binaryPath = str_replace('{platform}', $platform, config('flog.binary_path'));
+
+        if (!file_exists($binaryPath)) {
+            throw new \RuntimeException("Binary file not found at: {$binaryPath}");
+        }
+
+        return $binaryPath;
+    }
+
     /**
      * Generate a specified number of log lines in the given format.
      *
@@ -17,12 +29,11 @@ class Generator
      */
     public static function generate(int $lines = 1, string $format = 'rfc5424'): array
     {
-        // Get the configured platform from the application's configuration.
-        $platform = config('flog.platform');
+        $binaryPath = self::getBinaryPath();
 
         // Construct the process to execute the flog binary with the specified options.
         $process = new Process([
-            base_path("vendor/perfocard/flog/bin/{$platform}/flog"),
+            $binaryPath,
             '-f', $format,
             '-n', $lines,
         ]);

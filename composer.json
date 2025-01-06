@@ -1,0 +1,20 @@
+{
+  "name": "perfocard/flog",
+  "description": "Laravel wrapper for the Flog binary",
+  "type": "library",
+  "require": {
+    "php": ">=8.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Perfocard\\Flog\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Perfocard\\Flog\\FlogServiceProvider"
+      ]
+    }
+  }
+}

@@ -6,35 +6,57 @@ use Symfony\Component\Process\Process;
 
 class Generator
 {
-    protected string $binary;
-
-    public function __construct()
+    /**
+     * Generate a specified number of log lines in the given format.
+     *
+     * @param int $lines The number of log lines to generate.
+     * @param string $format The format of the log lines (default: 'rfc5424').
+     * @return array An array of generated log lines.
+     *
+     * @throws \RuntimeException If the process fails to generate logs.
+     */
+    public static function generate(int $lines = 1, string $format = 'rfc5424'): array
     {
+        // Get the configured platform from the application's configuration.
         $platform = config('flog.platform');
-        $this->binary = base_path("vendor/perfocard/flog/bin/{$platform}/flog");
-    }
 
-    public function generate(int $lines = 1, string $format = 'rfc5424'): array
-    {
-        $process = new Process([$this->binary, '-f', $format, '-n', $lines]);
+        // Construct the process to execute the flog binary with the specified options.
+        $process = new Process([
+            base_path("vendor/perfocard/flog/bin/{$platform}/flog"),
+            '-f', $format,
+            '-n', $lines,
+        ]);
+
+        // Run the process.
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        // Check if the process was successful, otherwise throw an exception.
+        if (! $process->isSuccessful()) {
             throw new \RuntimeException($process->getErrorOutput());
         }
 
-        // Розбиваємо результат на масив рядків
+        // Split the output into an array of lines.
         $output = $process->getOutput();
         $logs = explode("\n", trim($output));
 
-        // Повертаємо масив без порожніх рядків
+        // Filter out any empty lines and return the result.
         return array_filter($logs);
     }
 
-    public function generateOne(string $format = 'rfc5424'): string
+    /**
+     * Generate a single log line in the specified format.
+     *
+     * @param string $format The format of the log line (default: 'rfc5424').
+     * @return string The generated log line.
+     *
+     * @throws \RuntimeException If the process fails to generate a log line.
+     */
+    public static function generateOne(string $format = 'rfc5424'): string
     {
-        $logs = $this->generate(1, $format);
+        // Use the generate method to create a single log line.
+        $logs = self::generate(1, $format);
 
+        // Return the first log line or throw an exception if none are generated.
         return $logs[0] ?? throw new \RuntimeException("Failed to generate a single log.");
     }
 }

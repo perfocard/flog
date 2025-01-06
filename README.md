@@ -1,5 +1,9 @@
 # Flog Generator for Laravel
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/perfocard/flog.svg?style=flat-square)](https://packagist.org/packages/perfocard/flog)
+[![Total Downloads](https://img.shields.io/packagist/dt/perfocard/flog.svg?style=flat-square)](https://packagist.org/packages/perfocard/flog)
+[![License](https://img.shields.io/packagist/l/perfocard/flog.svg?style=flat-square)](https://packagist.org/packages/perfocard/flog)
+
 Flog is a Laravel package that provides an interface to generate fake logs. This package is a wrapper around the `flog` binary created by [mingrammer/flog](https://github.com/mingrammer/flog).
 
 ## Installation

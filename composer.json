@@ -2,6 +2,13 @@
   "name": "perfocard/flog",
   "description": "Laravel wrapper for the Flog binary",
   "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jaroslaw Goszowski",
+      "email": "goszowski@gmail.com"
+    }
+  ],
   "require": {
     "php": ">=8.4",
     "illuminate/support": "^11.0"
